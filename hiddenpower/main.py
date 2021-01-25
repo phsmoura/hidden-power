@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import sys
-from caesar import encrypt,decrypt
+from hiddenpower.caesar import encrypt,decrypt
 
 def main():
     cipher_type = sys.argv[1]
