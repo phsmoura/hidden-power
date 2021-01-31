@@ -1,26 +1,32 @@
-#!/usr/bin/python3
+import click
+import os
 
-import sys
-from hiddenpower.caesar import encrypt,decrypt
+plugin_folder = os.path.join(os.path.dirname(__file__), "commands")
 
-def main():
-    cipher_type = sys.argv[1]
-    argument = sys.argv[2]
-    content = sys.argv[3]
 
-    opt = {
-        'caesar': {
-            '-d': decrypt,
-            '-e': encrypt
-        }
-    }
+class MyCLI(click.MultiCommand):
+    def list_commands(self, ctx):
+        rv = []
+        for filename in os.listdir(plugin_folder):
+            if filename.startswith("_"):
+                continue
+            if filename.endswith(".py"):
+                rv.append(filename[:-3])
+        rv.sort()
+        return rv
 
-    try:
-        r = opt[cipher_type][argument](content)
-        print(r)
-    except KeyError:
-        print("Invalid command\n")
+    def get_command(self, ctx, name):
+        ns = {}
+        fn = os.path.join(plugin_folder, name + ".py")
+        with open(fn) as f:
+            code = compile(f.read(), fn, "exec")
+            eval(code, ns, ns)
+        return ns["cli"]
 
-   
-if __name__ == '__main__':
-	main()
+
+cli = MyCLI(
+    help="This tool's subcommands are loaded from a " "plugin folder dynamically."
+)
+
+if __name__ == "__main__":
+    cli()

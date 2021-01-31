@@ -10,7 +10,7 @@ setup(
     install_requires=requires,
     entry_points={
         'console_scripts': [
-            'hiddenpower=hiddenpower.main:main'
+            'hiddenpower=hiddenpower.main:cli'
         ]
     }
 )
