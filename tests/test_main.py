@@ -7,6 +7,6 @@ to make automation more convenient.
 
 if __name__ == '__main__':
     loader = unittest.TestLoader()
-    tests = loader.discover('.', pattern='test_*.py', top_level_dir="..")
+    tests = loader.discover('.', pattern='test_*.py', top_level_dir=".")
     test_runner = unittest.runner.TextTestRunner(verbosity=1)
     test_runner.run(tests)
